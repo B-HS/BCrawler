@@ -1,0 +1,37 @@
+import SiteHeader from '@/components/header/header'
+import { ThemeProvider } from '@/components/theme/theme-provider'
+import { cn } from '@/lib/utils'
+import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
+import { M_PLUS_Rounded_1c } from 'next/font/google'
+import { ReactNode } from 'react'
+import './globals.css'
+
+const GoToTop = dynamic(() => import('@/components/go-to-top'), { ssr: false })
+
+const fontRound = M_PLUS_Rounded_1c({
+    subsets: ['latin'],
+    variable: '--font-mplus',
+    weight: ['300', '500', '700', '900'],
+})
+
+export const metadata: Metadata = {
+    title: 'BHOTDEAL',
+    description: 'HOT DEAL CRAWLING SITE',
+}
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+    return (
+        <html lang='ko' suppressHydrationWarning>
+            <body className={cn('container max-w-screen-2xl h-dvh bg-background font-mplus antialiased flex flex-col', fontRound.variable)}>
+                <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+                    <SiteHeader />
+                    <section className='flex flex-col size-full py-5 flex-1 min-w-[350px]'>
+                        <GoToTop />
+                        {children}
+                    </section>
+                </ThemeProvider>
+            </body>
+        </html>
+    )
+}
