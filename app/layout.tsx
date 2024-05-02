@@ -16,11 +16,11 @@ const fontRound = M_PLUS_Rounded_1c({
 })
 
 export const metadata: Metadata = {
-    title: 'BHOTDEAL',
+    title: 'B-Hotdeal',
     description: 'HOT DEAL CRAWLING SITE',
 }
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+const Layout = ({ children }: { children: ReactNode }) => {
     return (
         <html lang='ko' suppressHydrationWarning>
             <body className={cn('container max-w-screen-2xl h-dvh bg-background font-mplus antialiased flex flex-col', fontRound.variable)}>
@@ -35,3 +35,5 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </html>
     )
 }
+
+export default Layout

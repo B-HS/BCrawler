@@ -1,35 +1,43 @@
-const parseQuasar = (rawHtml: string) => {
-    const divRegex = /<div[^>]*class="market-info-list-cont"[^>]*>(.*?)<\/div>/gs
-    const matches = Array.from(rawHtml.matchAll(divRegex))
+import * as cheerio from 'cheerio'
+const dataMapping = {
+    is_closed: 'label',
+    url: 'subject-link',
+    category: 'category',
+    price: 'text-orange',
+    shipping: 'shipping',
+    title: 'ellipsis-with-reply-cnt',
+    date: 'date',
+    img_src: 'maxImg',
+} as { [key: string]: string }
 
-    return matches.map((match) => {
-        const divContent = match[1]
-        const is_closed = /<span class="label done">/.test(divContent)
-        const url = divContent.match(/href="([^"]+)"/)
-        const categoryMatch = divContent.match(/<span\s+class="category">([^<]+)<\/span>/)
-        const titleMatch = divContent.match(/<span\s+class="ellipsis-with-reply-cnt">([^<]+)<\/span>/)
-        const priceMatch = divContent.match(/<span[^>]*>\s*가격\s*<span[^>]*>\s*([^<]+)<\/span>\s*<\/span>/s)
-        const shippingMatch = divContent.match(/<span>배송비\s+([^<]+)<\/span>/)
-        const dateMatch = divContent.match(/<span\s+class="date">\s*(\d{2}:\d{2})\s*<\/span>/)
-        const imgSrcMatch = divContent.match(/<img\s+style="[^"]+"\s+src="([^"]+)"/)
+const parseQuasar = (rawHtml: string): Article[] => {
+    const $ = cheerio.load(rawHtml)
+    const marketInfoLists = $('.market-info-list')
 
-        return {
-            id: url
-                ? url[1]
-                      .replace(/\s+/g, '')
-                      .split('/')
-                      .findLast(() => true)
-                : '',
-            is_closed,
-            url: url ? url[1].replace(/\s+/g, '') : '',
-            category: categoryMatch ? categoryMatch[1].replace(/\s+/g, '') : '',
-            price: priceMatch ? priceMatch[1].replace(/\s+/g, '') : '',
-            shipping: shippingMatch ? shippingMatch[1].replace(/\s+/g, '') : '',
-            title: titleMatch ? titleMatch[1] : '',
-            date: dateMatch ? dateMatch[1].replace(/\s+/g, '') : '',
-            img_src: imgSrcMatch ? imgSrcMatch[1] : '',
-        }
-    })
+    return marketInfoLists
+        .map((_, element) => {
+            const entries = Object.entries(dataMapping).map(([key, className]) => {
+                switch (key) {
+                    case 'img_src':
+                        return [key, $(element).find('div.thumb-wrap a img').attr('src') || '']
+                    case 'url':
+                        return [key, $(element).find(`.${className}`).attr('href') || '']
+                    case 'shipping':
+                        const spanText = $(element)
+                            .find('span')
+                            .filter((_, el) => Object.keys(el.attribs).length === 0)
+                            .text()
+                            .split('배송비')
+                            .pop()
+                            ?.trim()
+                        return [key, spanText || '']
+                    default:
+                        return [key, $(element).find(`.${className}`).text().trim()]
+                }
+            })
+            return Object.fromEntries(entries)
+        })
+        .get()
 }
 
 export { parseQuasar }

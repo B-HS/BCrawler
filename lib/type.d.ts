@@ -1,33 +1,13 @@
 type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
-
-interface ScheduleData {
-    tz: string
-    schedule: Record<DayOfWeek, Show[]>
-}
-
-interface DownloadProps {
-    res: number
-    torrent: string
-    magnet: string
-    xdcc: string
-}
-
-interface EpisodeProps {
-    time: string
-    release_date: string
-    show: string
-    episode: string
-    downloads: DownloadDownloadProps[]
-}
-
-interface Detail {
-    batch: any
-    episode: Record<string, EpisodeProps>
-}
-
-interface Show {
+type ArticleType = 'q' | 'f'
+interface Article {
+    id: string
+    is_closed: boolean | string
+    url: string
+    category: string
+    price: string
+    shipping: string
     title: string
-    page: string
-    image_url: string
-    time: string
+    date: string
+    img_src: string
 }
