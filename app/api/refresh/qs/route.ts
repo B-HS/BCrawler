@@ -7,7 +7,7 @@ export const POST = async () => {
         where: { type: 'QS' },
         orderBy: { lastupdate: 'desc' },
     })
-    const isAbleToUpdate = !latestRecord || Date.now() - latestRecord.lastupdate.getTime() > 3600000
+    const isAbleToUpdate = !latestRecord || Date.now() - latestRecord.lastupdate.getTime() > 3600000 / 2
     if (!isAbleToUpdate)
         return NextResponse.json({ status: `Please retry after 1 hour from the last update. \n Last update: ${latestRecord.lastupdate}` })
 

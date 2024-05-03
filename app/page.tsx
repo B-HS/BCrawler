@@ -1,5 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatDate } from '@/util/date'
+import { parseFm } from '@/util/parser'
+import { Bird } from 'lucide-react'
 import { headers } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -16,7 +18,7 @@ const Home = async () => {
 
     const data = {
         qs: await fetch(currentURL + '/api/list?type=qs', { method: 'GET' }).then((res) => res.json()),
-        fm: [],
+        fm: await fetch(currentURL + '/api/list?type=fm', { method: 'GET' }).then((res) => res.json()),
     }
 
     return (
@@ -42,8 +44,13 @@ const Home = async () => {
                                 className='flex justify-between flex-col border shadow-md hover:-translate-y-2 transition-transform'
                             >
                                 <div className='relative flex-1 aspect-[225/317]'>
-                                    <Image src={deal.img_src} alt={deal.title} fill style={{ objectFit: 'inherit' }} sizes='100%' priority />
+                                    {deal.img_src !== 'https:' ? (
+                                        <Image src={deal.img_src} alt={deal.title} fill style={{ objectFit: 'inherit' }} sizes='100%' priority />
+                                    ) : (
+                                        <Bird className='size-full p-10' />
+                                    )}
                                 </div>
+
                                 <span className='text-center truncate'>{deal.title}</span>
                                 <span className='text-center'>{deal.price}</span>
                                 <span className='text-center'>{deal.shipping}</span>
