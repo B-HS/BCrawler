@@ -2,8 +2,9 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 import { RefreshCcw } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
+import dayjs from 'dayjs'
 
 const Refresh = ({
     variant,
@@ -12,6 +13,7 @@ const Refresh = ({
     variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
     noTooltip?: boolean
 }) => {
+    const [visible, setVisible] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const listRefresh = () => {
         setIsLoading(true)
@@ -25,15 +27,28 @@ const Refresh = ({
         })
     }
 
+    useEffect(() => {
+        fetch('/api/last', { method: 'GET' })
+            .then((res) => res.json())
+            .then((data) => {
+                setVisible(data.txt)
+            })
+    }, [])
+
     return noTooltip ? (
-        <Icon className={isLoading ? 'animate-spin' : 'animate-none'} variant={variant} onClick={listRefresh} />
+        <Icon disabled={visible !== 'OK'} className={isLoading ? 'animate-spin' : 'animate-none'} variant={variant} onClick={listRefresh} />
     ) : (
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger className='leading-normal'>
-                    <Icon className={isLoading ? 'animate-spin' : 'animate-none'} variant={variant} onClick={listRefresh} />
+                    <Icon
+                        disabled={visible !== 'OK'}
+                        className={isLoading ? 'animate-spin' : 'animate-none'}
+                        variant={variant}
+                        onClick={() => visible === 'OK' && listRefresh()}
+                    />
                 </TooltipTrigger>
-                <TooltipContent>Refresh</TooltipContent>
+                <TooltipContent>{visible === 'OK' ? '갱신 가능' : dayjs(visible).format('마지막 갱신일 YYYY. MM. DD HH:mm:ss')}</TooltipContent>
             </Tooltip>
         </TooltipProvider>
     )
@@ -43,14 +58,24 @@ const Icon = ({
     variant,
     className,
     onClick,
+    disabled,
 }: {
     variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
     className: string
     onClick: () => void
+    disabled: boolean
 }) => {
     return (
-        <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Github' onClick={onClick}>
-            <span className='p-2'>
+        <Button
+            disabled={disabled}
+            className='disabled:cursor-not-allowed'
+            variant={variant || 'ghost'}
+            size={'icon'}
+            asChild
+            aria-label='Github'
+            onClick={() => !disabled && onClick()}
+        >
+            <span className='p-2 disabled:cursor-not-allowed'>
                 <RefreshCcw className={cn('size-6', className)} />
             </span>
         </Button>

@@ -22,7 +22,6 @@ const parsePm = (rawHtml: string): Article[] => {
                 switch (key) {
                     case 'img_src':
                         const tooltip = $(element).find(`.${className}`).attr('tooltip')?.split('://')[1]
-                        console.log(tooltip)
                         return tooltip ? [key, `https://${tooltip}`] : [key, '']
                     case 'price':
                         return [key, title.match(/\(([^)]+)\)/)?.[1] || '']
@@ -36,7 +35,6 @@ const parsePm = (rawHtml: string): Article[] => {
                         return [key, $(element).find(`.${className}`).text().trim()]
                 }
             })
-            console.log(Object.fromEntries(entries))
             return Object.fromEntries(entries)
         })
         .get()

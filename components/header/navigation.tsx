@@ -7,7 +7,7 @@ const ThemeChanger = dynamic(() => import('../theme/theme-changer'), { ssr: fals
 const Navigation = () => {
     return (
         <nav className='flex items-center'>
-            <Refresh noTooltip />
+            <Refresh />
             <Github noTooltip />
             <ThemeChanger />
         </nav>
