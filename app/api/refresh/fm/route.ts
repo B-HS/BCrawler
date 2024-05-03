@@ -27,6 +27,7 @@ export const POST = async () => {
 
     const fmInDb = await prisma.fm.findMany({
         where: { id: { in: fmIds } },
+        orderBy: { id: 'desc' },
     })
     const fmInDbMap = new Map(fmInDb.map((fm) => [fm.id, fm]))
     const toUpdate = fmJSON.filter((fm) => fmInDbMap.has(fm.id))

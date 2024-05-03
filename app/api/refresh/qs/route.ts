@@ -15,12 +15,14 @@ export const POST = async () => {
     const qsJSON = parseQuasar(qsRawHtml).filter((qs) => qs.title)
     qsJSON.forEach((qs) => {
         qs.id = qs.url.split('/').pop() || ''
-        qs.is_closed = qs.is_closed === '진행중'
+        console.log(qs.is_closed)
+        qs.is_closed = qs.is_closed === '종료'
     })
     const qsIds = qsJSON.map((qs) => qs.id)
 
     const qsInDb = await prisma.qs.findMany({
         where: { id: { in: qsIds } },
+        orderBy: { id: 'desc' },
     })
     const qsInDbMap = new Map(qsInDb.map((qs) => [qs.id, qs]))
     const toUpdate = qsJSON.filter((qs) => qsInDbMap.has(qs.id))
