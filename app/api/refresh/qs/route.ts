@@ -1,5 +1,5 @@
 import prisma from '@/prisma/db'
-import { parseQuasar } from '@/util/parser'
+import { parseQuasar } from '@/util/parse/qs'
 import { NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
 export const POST = async () => {

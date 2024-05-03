@@ -1,6 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatDate } from '@/util/date'
-import { parseFm } from '@/util/parser'
 import { Bird } from 'lucide-react'
 import { headers } from 'next/headers'
 import Image from 'next/image'
@@ -11,25 +10,31 @@ const Home = async () => {
     const domain = headersList.get('x-forwarded-host')
     const origin = headersList.get('x-forwarded-proto')
     const currentURL = `${origin}://${domain}`
+    const tabs = [
+        { value: 'qs', name: 'Qusar' },
+        { value: 'fm', name: 'FM' },
+        { value: 'pm', name: 'PM' },
+    ]
     const baseURL = {
         qs: 'https://quasarzone.com',
-        fm: '',
+        fm: 'https://www.fmkorea.com',
+        pm: 'https://ppomppu.co.kr',
     }
 
     const data = {
-        qs: await fetch(currentURL + '/api/list?type=qs', { method: 'GET' }).then((res) => res.json()),
-        fm: await fetch(currentURL + '/api/list?type=fm', { method: 'GET' }).then((res) => res.json()),
+        qs: await fetch(currentURL + '/api/list?type=qs', { method: 'GET' }).then((res) => (res.ok && res.json()) || []),
+        fm: await fetch(currentURL + '/api/list?type=fm', { method: 'GET' }).then((res) => (res.ok && res.json()) || []),
+        pm: await fetch(currentURL + '/api/list?type=pm', { method: 'GET' }).then((res) => (res.ok && res.json()) || []),
     }
 
     return (
         <Tabs defaultValue='qs' className='w-full h-full flex flex-col'>
             <TabsList className='flex justify-start flex-wrap h-fit'>
-                <TabsTrigger value={'qs'} className='capitalize min-w-[113px] w-[14.285%] '>
-                    Qusar
-                </TabsTrigger>
-                <TabsTrigger value={'fm'} className='capitalize min-w-[113px] w-[14.285%] '>
-                    FM
-                </TabsTrigger>
+                {tabs.map((tab) => (
+                    <TabsTrigger key={tab.value} value={tab.value} className='capitalize min-w-[113px] w-[14.285%] '>
+                        {tab.name}
+                    </TabsTrigger>
+                ))}
             </TabsList>
             {Object.keys(data).map((deals) => (
                 <TabsContent key={deals} value={deals} className='flex-1 cursor-pointer'>
@@ -37,7 +42,7 @@ const Home = async () => {
                         className='grid grid-flow-row-dense gap-4 h-full py-2.5 max-h-[485px]'
                         style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))' }}
                     >
-                        {data[deals as 'qs' | 'fm'].map((deal: Article) => (
+                        {data[deals as 'qs' | 'fm' | 'pm'].map((deal: Article) => (
                             <Link
                                 key={deal.id}
                                 href={`${baseURL[deals as 'qs' | 'fm']}${deal.url}`}

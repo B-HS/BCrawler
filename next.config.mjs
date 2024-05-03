@@ -2,7 +2,7 @@
 const nextConfig = {
 
     images: {
-        domains: ['img2.quasarzone.com', 'image.fmkorea.com'],
+        domains: ['img2.quasarzone.com', 'image.fmkorea.com', 'cdn2.ppomppu.co.kr', 'cdn.ppomppu.co.kr'],
     },
 };
 
