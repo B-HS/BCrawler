@@ -14,17 +14,5 @@
         },
         "ecmaVersion": 12,
         "sourceType": "module"
-    },
-    "rules": {
-        "quotes": [
-            "single",
-            {
-                "avoidEscape": true,
-                "allowTemplateLiterals": true
-            }
-        ],
-        "jsx-quotes": [
-            "prefer-single"
-        ]
     }
 }

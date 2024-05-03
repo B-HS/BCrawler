@@ -1,25 +1,14 @@
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
-import Link from 'next/link';
-import { Button } from '../ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { GitHubLogoIcon } from '@radix-ui/react-icons'
+import Link from 'next/link'
+import { Button } from '../ui/button'
 
 const Github = ({
     variant,
     noTooltip,
 }: {
-    variant?:
-        | 'default'
-        | 'destructive'
-        | 'outline'
-        | 'secondary'
-        | 'ghost'
-        | 'link';
-    noTooltip?: boolean;
+    variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+    noTooltip?: boolean
 }) => {
     return noTooltip ? (
         <Icon variant={variant} />
@@ -32,32 +21,17 @@ const Github = ({
                 <TooltipContent>Github</TooltipContent>
             </Tooltip>
         </TooltipProvider>
-    );
-};
+    )
+}
 
-const Icon = ({
-    variant,
-}: {
-    variant?:
-        | 'default'
-        | 'destructive'
-        | 'outline'
-        | 'secondary'
-        | 'ghost'
-        | 'link';
-}) => {
+const Icon = ({ variant }: { variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' }) => {
     return (
-        <Button
-            variant={variant || 'ghost'}
-            size={'icon'}
-            asChild
-            aria-label='Github'
-        >
+        <Button variant={variant || 'ghost'} size={'icon'} asChild aria-label='Github'>
             <Link className='p-2' href={'https://github.com/B-HS'}>
                 <GitHubLogoIcon className='h-6 w-6' />
             </Link>
         </Button>
-    );
-};
+    )
+}
 
-export default Github;
+export default Github

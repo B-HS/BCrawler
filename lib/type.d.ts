@@ -1,5 +1,4 @@
 type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
-type ArticleType = 'q' | 'f'
 interface Article {
     id: string
     is_closed: boolean | string
