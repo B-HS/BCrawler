@@ -18,7 +18,7 @@ const Home = async () => {
     const baseURL = {
         qs: 'https://quasarzone.com',
         fm: 'https://www.fmkorea.com',
-        pm: 'https://ppomppu.co.kr',
+        pm: 'https://ppomppu.co.kr/zboard',
     }
 
     const data = {
