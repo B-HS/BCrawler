@@ -10,7 +10,6 @@ export const GET = async (req: NextRequest) => {
 
     const modelMap: Record<string, any> = {
         qs: prisma.qs,
-        fm: prisma.fm,
         pm: prisma.pm,
     }
     const model = modelMap[type]

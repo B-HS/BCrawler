@@ -1,7 +1,6 @@
 const executeRequests = () => {
     Promise.all([
         fetch('https://hot.gumyo.net/api/refresh/qs', { method: 'POST' }),
-        fetch('https://hot.gumyo.net/api/refresh/fm', { method: 'POST' }),
         fetch('https://hot.gumyo.net/api/refresh/pm', { method: 'POST' }),
     ])
         .then(responses => {

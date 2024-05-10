@@ -15,7 +15,6 @@ export const POST = async () => {
     const qsJSON = parseQuasar(qsRawHtml).filter((qs) => qs.title)
     qsJSON.forEach((qs) => {
         qs.id = qs.url.split('/').pop() || ''
-        console.log(qs.is_closed)
         qs.is_closed = qs.is_closed === '종료'
     })
     const qsIds = qsJSON.map((qs) => qs.id)

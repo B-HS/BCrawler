@@ -12,18 +12,15 @@ const Home = async () => {
     const currentURL = `${origin}://${domain}`
     const tabs = [
         { value: 'qs', name: 'Qusar' },
-        { value: 'fm', name: 'FM' },
         { value: 'pm', name: 'PM' },
     ]
     const baseURL = {
         qs: 'https://quasarzone.com',
-        fm: 'https://www.fmkorea.com',
         pm: 'https://ppomppu.co.kr/zboard',
     }
 
     const data = {
         qs: await fetch(currentURL + '/api/list?type=qs', { method: 'GET' }).then((res) => (res.ok && res.json()) || []),
-        fm: await fetch(currentURL + '/api/list?type=fm', { method: 'GET' }).then((res) => (res.ok && res.json()) || []),
         pm: await fetch(currentURL + '/api/list?type=pm', { method: 'GET' }).then((res) => (res.ok && res.json()) || []),
     }
 
@@ -31,7 +28,7 @@ const Home = async () => {
         <Tabs defaultValue='qs' className='w-full h-full flex flex-col'>
             <TabsList className='flex justify-start flex-wrap h-fit'>
                 {tabs.map((tab) => (
-                    <TabsTrigger key={tab.value} value={tab.value} className='capitalize min-w-[113px] w-[14.285%] '>
+                    <TabsTrigger key={tab.value} value={tab.value} className='capitalize min-w-[113px] w-[14.285%]'>
                         {tab.name}
                     </TabsTrigger>
                 ))}
@@ -42,10 +39,10 @@ const Home = async () => {
                         className='grid grid-flow-row-dense gap-4 h-full py-2.5 max-h-[485px]'
                         style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))' }}
                     >
-                        {data[deals as 'qs' | 'fm' | 'pm'].map((deal: Article) => (
+                        {data[deals as 'qs' | 'pm'].map((deal: Article) => (
                             <Link
                                 key={deal.id}
-                                href={`${baseURL[deals as 'qs' | 'fm']}${deal.url}`}
+                                href={`${baseURL[deals as 'qs' | 'pm']}${deal.url}`}
                                 className='flex justify-between flex-col border shadow-md hover:-translate-y-2 transition-transform'
                             >
                                 <div className='relative flex-1 aspect-[225/317]'>
