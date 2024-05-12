@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest) => {
     const list = await model.findMany({
         take: 20,
         skip: (page - 1) * 20,
-        orderBy: { id: 'desc' },
+        orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
     })
 
     return NextResponse.json(list)
