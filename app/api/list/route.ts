@@ -1,5 +1,5 @@
-import prisma from '@/prisma/db'
 import { NextRequest, NextResponse } from 'next/server'
+import prisma from 'prisma/db'
 export const dynamic = 'force-dynamic'
 
 export const GET = async (req: NextRequest) => {
@@ -21,5 +21,13 @@ export const GET = async (req: NextRequest) => {
         orderBy: [{ updatedAt: 'desc' }, { id: 'desc' }],
     })
 
-    return NextResponse.json(list)
+    const totalItems = await model.count()
+
+    return NextResponse.json({
+        items: list,
+        totalItems: totalItems,
+        currentPage: page,
+        totalPages: Math.ceil(totalItems / 20),
+        isNext: totalItems > page * 20,
+    })
 }

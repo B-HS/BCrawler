@@ -1,6 +1,7 @@
-import prisma from '@/prisma/db'
-import { parsePm } from '@/util/parse/pm'
+import { Article } from '@entities/common'
+import { parsePm } from '@shared/parse'
 import { NextResponse } from 'next/server'
+import prisma from 'prisma/db'
 export const dynamic = 'force-dynamic'
 export const POST = async () => {
     const latestRecord = await prisma.lastupdate.findFirst({
@@ -11,8 +12,6 @@ export const POST = async () => {
     if (!isAbleToUpdate)
         return NextResponse.json({ status: `Please retry after 1 hour from the last update. \n Last update: ${latestRecord.lastupdate}` })
 
-    // below two res.text is encoded euc-kr
-    // decode it
     const decoder = new TextDecoder('euc-kr')
 
     const pmPCBuffer = await (await fetch('https://www.ppomppu.co.kr/zboard/zboard.php?id=ppomppu&category=4')).arrayBuffer()

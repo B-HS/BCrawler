@@ -1,39 +1,43 @@
-import SiteHeader from '@/components/header/header'
-import { ThemeProvider } from '@/components/theme/theme-provider'
-import { cn } from '@/lib/utils'
+import { Toaster } from '@shared/ui/toaster'
+import { cn } from '@shared/utils'
+import { SiteHeader } from '@widgets/header'
+import { QueryProvider, ThemeProvider } from '@widgets/provider'
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { M_PLUS_Rounded_1c } from 'next/font/google'
-import { ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import './globals.css'
 
-const GoToTop = dynamic(() => import('@/components/go-to-top'), { ssr: false })
-
-const fontRound = M_PLUS_Rounded_1c({
-    subsets: ['latin'],
-    variable: '--font-mplus',
-    weight: ['300', '500', '700', '900'],
-})
+const GoToTop = dynamic(() => import('@features/common').then((comp) => comp.GoToTop), { ssr: false })
 
 export const metadata: Metadata = {
     title: 'B-Hotdeal',
     description: 'HOT DEAL CRAWLING SITE',
 }
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const fontRound = M_PLUS_Rounded_1c({
+    subsets: ['latin'],
+    variable: '--font-mplus',
+    weight: ['100', '300', '500', '700', '800', '900'],
+})
+
+const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <html lang='ko' suppressHydrationWarning>
-            <body className={cn('container max-w-screen-2xl h-dvh bg-background font-mplus antialiased flex flex-col', fontRound.variable)}>
+            <body className={cn('flex flex-col min-h-dvh font-mplus antialiased', fontRound.variable)}>
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-                    <SiteHeader />
-                    <section className='flex flex-col size-full py-5 flex-1 min-w-[350px]'>
-                        <GoToTop />
-                        {children}
-                    </section>
+                    <QueryProvider>
+                        <SiteHeader />
+                        <section className='max-w-screen-2xl mx-auto overflow-auto size-full flex-1'>
+                            {children}
+                            <GoToTop />
+                        </section>
+                    </QueryProvider>
+                    <Toaster />
                 </ThemeProvider>
             </body>
         </html>
     )
 }
 
-export default Layout
+export default RootLayout

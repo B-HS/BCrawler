@@ -1,6 +1,6 @@
-import prisma from '@/prisma/db'
-import { parseQuasar } from '@/util/parse/qs'
+import { parseQuasar } from '@shared/parse'
 import { NextResponse } from 'next/server'
+import prisma from 'prisma/db'
 export const dynamic = 'force-dynamic'
 export const POST = async () => {
     const latestRecord = await prisma.lastupdate.findFirst({

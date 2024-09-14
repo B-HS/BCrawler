@@ -1,8 +1,8 @@
-import prisma from '@/prisma/db'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
+import prisma from 'prisma/db'
 export const dynamic = 'force-dynamic'
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
     const latestRecord = await prisma.lastupdate.findFirst({
         orderBy: { lastupdate: 'desc' },
     })
