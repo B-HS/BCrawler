@@ -52,7 +52,8 @@ const Player = ({ url, title }: { url: string; title?: string }) => {
                             'absolute top-0 left-0 backdrop-opacity-90 size-full bg-background/50 z-50 group-hover:opacity-100 opacity-0 flex flex-col justify-between items-center transition-all',
                             (!playerOptions.playing || (extraOptions.isFull && extraOptions.isCursorVisible)) && 'opacity-100',
                             !extraOptions.isCursorVisible && 'opacity-0  group-hover:opacity-100',
-                        )}>
+                        )}
+                    >
                         <section className='w-full h-16 flex items-center p-2.5 bg-background/90'>
                             <span className='text-xl font-semibold'>{title || 'VIDEO'}</span>
                         </section>

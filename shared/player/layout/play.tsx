@@ -12,7 +12,8 @@ export const Play = ({ className }: { className?: ClassNameValue }) => {
             size={'icon'}
             variant={'ghost'}
             className={cn('rounded-none', className)}
-            onClick={() => setPlayerOptions({ playing: !playerOptions.playing })}>
+            onClick={() => setPlayerOptions({ playing: !playerOptions.playing })}
+        >
             {playerOptions.playing ? <PauseIcon /> : <PlayIcon />}
         </Button>
     )

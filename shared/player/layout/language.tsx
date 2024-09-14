@@ -39,7 +39,8 @@ export const Language = ({ className }: { className?: ClassNameValue }) => {
                             onClick={() => {
                                 setCurrent(language.name)
                                 setSubtitle(idx)
-                            }}>
+                            }}
+                        >
                             {language.name}
                         </span>
                     ))}

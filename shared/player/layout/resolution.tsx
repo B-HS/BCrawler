@@ -37,7 +37,8 @@ export const Resolution = ({ className }: { className?: ClassNameValue }) => {
                             onClick={() => {
                                 setCurrent(resolutionMapper(quality).height)
                                 setQuality(idx)
-                            }}>
+                            }}
+                        >
                             {resolutionMapper(quality).height}p
                         </span>
                     ))}

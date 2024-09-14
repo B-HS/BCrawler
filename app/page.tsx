@@ -78,13 +78,15 @@ const Page = () => {
             </section>
             <section
                 className='grid grid-flow-row-dense gap-4 h-full py-2.5'
-                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))' }}>
+                style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))' }}
+            >
                 {data?.pages.map((page, pageIndex) =>
                     page.items.map((deal: Article, dealIndex: number) => (
                         <Link
                             key={`${pageIndex}-${dealIndex}-${deal.id}`}
                             href={`${baseURL[currentTab]}${deal.url || ''}`}
-                            className='flex justify-between flex-col bord∏er shadow-md hover:-translate-y-2 transition-transform rounded'>
+                            className='flex justify-between flex-col bord∏er shadow-md hover:-translate-y-2 transition-transform rounded'
+                        >
                             <div className='relative flex-1 aspect-[225/317]'>
                                 {deal.img_src !== 'https:' ? (
                                     <Image

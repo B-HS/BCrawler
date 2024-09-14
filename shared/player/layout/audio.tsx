@@ -38,7 +38,8 @@ export const Audio = ({ className }: { className?: ClassNameValue }) => {
                             onClick={() => {
                                 setCurrent(audio.name)
                                 setAudioTrack(idx)
-                            }}>
+                            }}
+                        >
                             {audio.name}
                         </span>
                     ))}

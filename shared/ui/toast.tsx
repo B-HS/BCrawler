@@ -70,7 +70,8 @@ const ToastClose = React.forwardRef<React.ElementRef<typeof ToastPrimitives.Clos
                 className,
             )}
             toast-close=''
-            {...props}>
+            {...props}
+        >
             <X className='h-4 w-4' />
         </ToastPrimitives.Close>
     ),
