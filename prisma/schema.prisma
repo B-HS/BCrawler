@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UpdateType {
+  QS
+  FM
+  PM
+}
+
+model lastupdate {
+  // auto increament
+  id         String     @id @default(cuid())
+  lastupdate DateTime   @default(now())
+  type       UpdateType
+}
+
+model pm {
+  pmid      String   @id
+  id        String
+  is_closed Boolean
+  url       String
+  category  String
+  price     String
+  shipping  String
+  title     String
+  date      String
+  img_src   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model qs {
+  qsid      String   @id
+  id        String
+  is_closed Boolean
+  url       String
+  category  String
+  price     String
+  shipping  String
+  title     String
+  date      String
+  img_src   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model fm {
+  fmid      String   @id
+  id        String
+  is_closed Boolean
+  url       String
+  category  String
+  price     String
+  shipping  String
+  title     String
+  date      String
+  img_src   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
