@@ -1,7 +1,9 @@
 'use client'
 import { Article } from '@entities/common'
+import { useDebouncedValue } from '@shared/hooks/use-debounce-value'
 import { Button } from '@shared/ui/button'
 import Fallback from '@shared/ui/fall-back'
+import { Input } from '@shared/ui/input'
 import { formatDate } from '@shared/utils'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Bird } from 'lucide-react'
@@ -15,21 +17,21 @@ const fetchList = async ({
     pageParam: {
         page: number
         type: 'qs' | 'pm'
+        search?: string
     }
 }) => {
-    console.log(pageParam)
-
-    const res = await fetch(`/api/list?type=${pageParam.type}&page=${pageParam.page}`)
+    const res = await fetch(`/api/list?type=${pageParam.type}&page=${pageParam.page}&search=${pageParam.search}`)
     if (!res.ok) {
         throw new Error('Failed to fetch data')
     }
-    pageParam
     return res.json()
 }
 
 const Page = () => {
+    const [search, setSearch] = useState('')
     const [currentTab, setCurrentTab] = useState<'qs' | 'pm'>('qs')
     const observeRef = useRef<HTMLDivElement>(null)
+    const debouncedValue = useDebouncedValue(search, 1000)
 
     const baseURL = {
         qs: 'https://quasarzone.com',
@@ -37,10 +39,13 @@ const Page = () => {
     }
 
     const { data, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
-        queryKey: ['list', currentTab],
+        queryKey: ['list', currentTab, debouncedValue],
         queryFn: fetchList,
-        initialPageParam: { page: 1, type: currentTab },
-        getNextPageParam: (data) => ({ page: data.currentPage + 1, type: currentTab }),
+        initialPageParam: { page: 1, type: currentTab, search: debouncedValue },
+        getNextPageParam: (data) => {
+            console.log(search)
+            return { page: data.currentPage + 1, type: currentTab, search: debouncedValue }
+        },
     })
 
     const loadMore = useCallback(() => {
@@ -76,6 +81,7 @@ const Page = () => {
                     Ppom
                 </Button>
             </section>
+            <Input value={search} onChange={(e) => setSearch(e.target.value)} />
             <section
                 className='grid grid-flow-row-dense gap-4 h-full py-2.5'
                 style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))' }}
